@@ -38,8 +38,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AlphaAmount: 0.03
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Start: 50
+    - _layer1_Scale: 2.37
+    - _layer1_Speed: 0.49
+    - _layer2_Scale: 1
+    - _layer2_Speed: 1
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &1351866706254865984

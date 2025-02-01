@@ -43,12 +43,12 @@ Material:
     - _QueueOffset: 0
     - _Rotation: 11.27
     - _Scale: 0.89
-    - _Speed: 0.8
+    - _Speed: 0.33
     - _StartTime: 50
     m_Colors:
     - _BaseColor: {r: 0, g: 0, b: 0, a: 0}
-    - _HighlightColor: {r: 0.2628058, g: 0.5534587, b: 0.43996564, a: 0}
-    - _Shape: {r: 1, g: 35, b: 0, a: 0}
+    - _HighlightColor: {r: 0.029172082, g: 0.031446517, b: 0.030688372, a: 0}
+    - _Shape: {r: 0.4, g: 23.5, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6778214792870287899
 MonoBehaviour:
