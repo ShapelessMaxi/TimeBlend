@@ -11,6 +11,9 @@ public class UIcontroller : MonoBehaviour
     public TMP_Text menuText;
     public GameObject leftButtonHighlight;
     public GameObject rightButtonHighlight;
+    public float highlightTiming = 0.5f;
+
+    private bool isLeftSelected = false;
 
     void Start()
     {
@@ -28,30 +31,35 @@ public class UIcontroller : MonoBehaviour
         // Detect arrow key presses
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            RightArrowPressed();
+            HighlightRightButton();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            LeftArrowPressed();
+            HighlightLeftButton();
+        }
+        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+        {
+            ConfirmSelection();
         }
     }
 
-    public void LeftArrowPressed()
+    public void HighlightLeftButton()
     {
+        isLeftSelected = true;
         leftHighlight();
-        PreviousScreen();
+        rightUnHighlight();
     }
 
-    public void RightArrowPressed()
+    public void HighlightRightButton()
     {
+        isLeftSelected = false;
         rightHighlight();
-        NextScreen();
+        leftUnHighlight();
     }
 
     public void leftHighlight()
     {
         leftButtonHighlight.SetActive(true);
-        Invoke("leftUnHighlight", 0.2f); // Brief highlight effect
     }
     public void leftUnHighlight()
     {
@@ -60,32 +68,40 @@ public class UIcontroller : MonoBehaviour
     public void rightHighlight()
     {
         rightButtonHighlight.SetActive(true);
-        Invoke("rightUnHighlight", 0.2f); // Brief highlight effect
     }
     public void rightUnHighlight()
     {
         rightButtonHighlight.SetActive(false);
     }
 
-    public void HidePreviousContent()
-    {
-        screens[currentScreen].emptyParent.SetActive(false);
-    }
     public void UpdateContent()
     {
         menuText.text = screens[currentScreen].title;
         screens[currentScreen].emptyParent.SetActive(true);
     }
 
+    public void ConfirmSelection()
+    {
+        if (isLeftSelected)
+        {
+            PreviousScreen();
+        }
+        else
+        {
+            NextScreen();
+        }
+    }
+
     public void NextScreen()
     {
-        HidePreviousContent();
+        screens[currentScreen].emptyParent.SetActive(false);
         currentScreen = (currentScreen + 1) % screens.Count;
         UpdateContent();
     }
+
     public void PreviousScreen()
     {
-        HidePreviousContent();
+        screens[currentScreen].emptyParent.SetActive(false);
         currentScreen = (currentScreen - 1 + screens.Count) % screens.Count;
         UpdateContent();
     }

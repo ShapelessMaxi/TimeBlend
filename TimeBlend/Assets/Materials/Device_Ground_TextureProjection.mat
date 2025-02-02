@@ -46,6 +46,7 @@ Material:
     - _QueueOffset: 0
     m_Colors:
     - _Color: {r: 0.93520766, g: 1, b: 0.31132066, a: 0}
+    - _Position_Animation: {r: 0, g: 0, b: 0, a: 0}
     - _UV_Shape: {r: 11.63, g: 6.97, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &990806678860212890
