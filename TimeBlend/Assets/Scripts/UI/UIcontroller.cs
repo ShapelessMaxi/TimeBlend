@@ -9,19 +9,23 @@ public class UIcontroller : MonoBehaviour
     public int currentScreen = 0;
 
     public TMP_Text menuText;
+
     public GameObject leftButtonHighlight;
     public GameObject rightButtonHighlight;
     public float highlightTiming = 0.5f;
+
+    public GameObject mapParent;
+    public GameObject messagesParent;
 
     private bool isLeftSelected = false;
 
     void Start()
     {
         // Create screen objects
-        screens.Add(new ScreenData("msgs", GameObject.Find("Messages")));
-        screens.Add(new ScreenData("map", GameObject.Find("Map")));
-        screens.Add(new ScreenData("test01", GameObject.Find("Map")));
-        screens.Add(new ScreenData("test02", GameObject.Find("Map")));
+        screens.Add(new ScreenData("msgs", messagesParent));
+        screens.Add(new ScreenData("map", mapParent));
+        screens.Add(new ScreenData("test01", mapParent));
+        screens.Add(new ScreenData("test02", mapParent));
         
         UpdateContent();
     }
