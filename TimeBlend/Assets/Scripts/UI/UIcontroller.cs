@@ -26,6 +26,8 @@ public class UIcontroller : MonoBehaviour
     void Start()
     {
         // Create screen objects
+        // displayed menu title
+        //empty aprent game object containing all related game objects to hide/display
         screens.Add(new ScreenData("lock", lockParent));
         screens.Add(new ScreenData("msgs", messagesParent));
         screens.Add(new ScreenData("map", mapParent));
