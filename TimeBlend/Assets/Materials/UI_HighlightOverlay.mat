@@ -58,7 +58,7 @@ Material:
     - _Rotation: 45
     - _Scale: 8.67
     - _Speed: 0
-    - _StartTime: 50
+    - _StartTime: 0
     m_Colors:
     - _BaseColor: {r: 0.08734064, g: 0.47442892, b: 0.98490566, a: 0}
     - _HighlightColor: {r: 0, g: 1.4441017, b: 2.608238, a: 0}
