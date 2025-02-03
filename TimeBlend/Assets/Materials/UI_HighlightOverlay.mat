@@ -57,7 +57,7 @@ Material:
     - _QueueOffset: 0
     - _Rotation: 45
     - _Scale: 8.67
-    - _Speed: 1.35
+    - _Speed: 0
     - _StartTime: 50
     m_Colors:
     - _BaseColor: {r: 0.08734064, g: 0.47442892, b: 0.98490566, a: 0}
