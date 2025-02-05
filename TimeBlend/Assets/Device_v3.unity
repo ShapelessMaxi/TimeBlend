@@ -3439,6 +3439,7 @@ GameObject:
   - component: {fileID: 967848493}
   - component: {fileID: 967848494}
   - component: {fileID: 967848495}
+  - component: {fileID: 967848496}
   m_Layer: 0
   m_Name: Device_UIcontroller
   m_TagString: Untagged
@@ -3522,10 +3523,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 967848490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9588e29928e21d42b0a4eace82f4197, type: 3}
+  m_Script: {fileID: 11500000, guid: d40a9233a8b955c45963d603e0655b15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentClock: {fileID: 119824188}
+  sentMessages: []
+--- !u!114 &967848496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967848490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b209162a23681c145a5224fbd00f6fb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allMessages: []
+  randomMessages: []
+  locationMessages: []
 --- !u!1 &973239309
 GameObject:
   m_ObjectHideFlags: 0
@@ -6364,6 +6380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2002652291}
   - component: {fileID: 2002652290}
+  - component: {fileID: 2002652292}
   m_Layer: 0
   m_Name: Global_PostProcessing
   m_TagString: Untagged
@@ -6403,6 +6420,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2002652292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002652289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72514589031722148b355e3372dbce05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeviceScreen: {fileID: 2100000, guid: cdf51fd464b4b9d44bc642ea75b546fa, type: 2}
+  DeviceHighlights: {fileID: 2100000, guid: f518252a2bfb340469d8ca2c310cb1d7, type: 2}
+  DeviceEnvGround: {fileID: 2100000, guid: a595a9402182eb349952d731e1a319bb, type: 2}
+  DeviceEnvFog: {fileID: 2100000, guid: f767c7a12eaa2e0408834c3cdb299735, type: 2}
 --- !u!1 &2015560441
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,16 @@
+[
+    {
+        "messageType": "random",
+        "isSent": false,
+        "canBeSent": true,
+        "senderName": "Alice",
+        "fullMessage": "Hey, what's up? Haven't seen you in a while!"
+    },
+    {
+        "messageType": "locsation",
+        "isSent": true,
+        "canBeSent": false,
+        "senderName": "Bob",
+        "fullMessage": "See you later, I'll text you when I get home."
+    }
+]

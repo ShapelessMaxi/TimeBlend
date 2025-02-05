@@ -7,7 +7,7 @@ public class UIcontroller : MonoBehaviour
 {
     public List<ScreenData> screens = new List<ScreenData>();
     public int currentScreen = 0;
-    private CreateMessage CreateMessage;
+    private SendMessage sendMessage;
 
     public TMP_Text menuText;
     public GameObject menuObject;
@@ -21,7 +21,6 @@ public class UIcontroller : MonoBehaviour
     public GameObject messagesParent;
     public GameObject mapParent;
 
-    
     public GameObject notificationA;
     public GameObject notificationA_highlight;
     public GameObject notificationA_profilepic;
@@ -47,7 +46,7 @@ public class UIcontroller : MonoBehaviour
     void Start()
     {
         // find the list of sent messages
-        CreateMessage = GetComponent<CreateMessage>();
+        sendMessage = GetComponent<SendMessage>();
         
         // Create screen objects
         // displayed menu title
@@ -99,40 +98,40 @@ public class UIcontroller : MonoBehaviour
             }   
         }
 
-        int messageCount = CreateMessage.sentMessages.Count;
+        int messageCount = sendMessage.sentMessages.Count;
 
         // Loop through the first 3 entries or as many entries as exist in the list
         for (int i = 0; i < Mathf.Min(3, messageCount); i++)
         {
             // Assuming you're updating notifications for positions "A", "B", "C"
             string notificationPosition = GetNotificationPosition(i);
-            UpdateNotification(notificationPosition, CreateMessage.sentMessages[i]);
+            UpdateNotification(notificationPosition, sendMessage.sentMessages[i]);
         }
       
     }
 
-    public void UpdateNotification(string motificationIdentifier, ScreenData.MessageData message)
+    public void UpdateNotification(string motificationIdentifier, MessageData message)
     {
         // target the correct game object
         if (motificationIdentifier == "A") {
             notificationA.SetActive(true);
             notificationA_name.text = message.senderName;
             notificationA_timestamp.text = currentClock.text;
-            notificationA_abreviatedMessage.text = message.abreviatedMessage;
+            notificationA_abreviatedMessage.text = message.fullMessage.Substring(0, 12);
         } 
         else if (motificationIdentifier == "B") 
         {
             notificationB.SetActive(true);
             notificationB_name.text = message.senderName;
             notificationB_timestamp.text = currentClock.text;
-            notificationB_abreviatedMessage.text = message.abreviatedMessage;
+            notificationB_abreviatedMessage.text = message.fullMessage.Substring(0, 12);
         }
         else if (motificationIdentifier == "C") 
         {
             notificationC.SetActive(true);
             notificationC_name.text = message.senderName;
             notificationC_timestamp.text = currentClock.text;
-            notificationC_abreviatedMessage.text = message.abreviatedMessage;
+            notificationC_abreviatedMessage.text = message.fullMessage.Substring(0, 12);
         }
     }
 
@@ -201,10 +200,6 @@ public class UIcontroller : MonoBehaviour
         // update the content of the menu and main screen
         menuText.text = screens[currentScreen].title;
         screens[currentScreen].emptyParent.SetActive(true);
-
-       
-        
-       
     }
 
     public void ConfirmSelection()
