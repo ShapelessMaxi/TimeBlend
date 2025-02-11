@@ -3148,7 +3148,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &807196384
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3168,7 +3168,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 50.065, y: -0.011}
+  m_AnchoredPosition: {x: 50.075, y: -0.011}
   m_SizeDelta: {x: 0.16, y: 0.45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &816320915
@@ -3540,10 +3540,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 967848492}
-  - component: {fileID: 967848493}
-  - component: {fileID: 967848494}
-  - component: {fileID: 967848495}
   - component: {fileID: 967848496}
+  - component: {fileID: 967848497}
+  - component: {fileID: 967848494}
+  - component: {fileID: 967848493}
   m_Layer: 0
   m_Name: Device_UIcontroller
   m_TagString: Untagged
@@ -3578,16 +3578,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa3320a71f3c4f4fb7cbb7df322ae63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentScreen: 0
-  menuText: {fileID: 1790303002}
-  menuObject: {fileID: 758347253}
-  lockObject: {fileID: 1568937130}
-  currentClock: {fileID: 119824188}
-  leftButtonHighlight: {fileID: 973239309}
-  rightButtonHighlight: {fileID: 622568187}
+  messageSender: {fileID: 967848497}
   lockParent: {fileID: 117918359}
   messagesParent: {fileID: 1051861056}
   mapParent: {fileID: 1183209596}
+  clockObject: {fileID: 0}
+  clockText: {fileID: 0}
+  menuObject: {fileID: 758347253}
+  menuText: {fileID: 1790303002}
+  leftButtonHighlight: {fileID: 973239309}
+  rightButtonHighlight: {fileID: 622568187}
   notificationA: {fileID: 481800055}
   notificationA_highlight: {fileID: 807196383}
   notificationA_profilepic: {fileID: 1648945067}
@@ -3604,6 +3604,7 @@ MonoBehaviour:
   notificationC_name: {fileID: 1119008596}
   notificationC_abreviatedMessage: {fileID: 73551592}
   notificationC_timestamp: {fileID: 2136680352}
+  currentScreen: 0
 --- !u!114 &967848494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3618,19 +3619,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clockText: {fileID: 119824188}
   timeScale: 2
---- !u!114 &967848495
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 967848490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d40a9233a8b955c45963d603e0655b15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sentMessages: []
+  currentHour: 0
+  currentMinute: 0
+  currentSecond: 0
 --- !u!114 &967848496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3646,6 +3637,21 @@ MonoBehaviour:
   allMessages: []
   randomMessages: []
   locationMessages: []
+--- !u!114 &967848497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967848490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8c9449d701c3bd4eab91fa2b910d58b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sentMessages: []
+  minTime: 0
+  maxTime: 5
 --- !u!1 &973239309
 GameObject:
   m_ObjectHideFlags: 0
@@ -7172,8 +7178,8 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1233772641}
   - {fileID: 1941193552}
   - {fileID: 1768408351}
   - {fileID: 967848492}
   - {fileID: 2002652291}
-  - {fileID: 1233772641}

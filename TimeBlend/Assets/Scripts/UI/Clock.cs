@@ -3,14 +3,16 @@ using TMPro;
 
 public class Clock : MonoBehaviour
 {
+    
     public (int Hour, int Minute, int Second) startTime = (13, 28, 30);
     public TMP_Text clockText;
     public float timeScale = 2.0f; // ✅ Fixed missing semicolon
     private float timer;
 
-    private int currentHour;
-    private int currentMinute;
-    private int currentSecond;
+    // keep track of the current time for access from other scripts
+    public int currentHour;
+    public int currentMinute;
+    public int currentSecond;
 
     void Start()
     {
@@ -31,6 +33,7 @@ public class Clock : MonoBehaviour
         }
     }
 
+
     void updateTime()
     {
         currentSecond++;
@@ -47,6 +50,7 @@ public class Clock : MonoBehaviour
         }
     }
 
+    // Show the current time on game objects
     void showTime()
     {
         if (clockText != null)

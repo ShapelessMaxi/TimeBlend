@@ -5,21 +5,24 @@ using UnityEngine.EventSystems; // Required for UI navigation
 
 public class UIcontroller : MonoBehaviour
 {
-    public List<ScreenData> screens = new List<ScreenData>();
-    public int currentScreen = 0;
-    private SendMessage sendMessage;
+    public MessageSender messageSender;
 
-    public TMP_Text menuText;
+    public List<ScreenData> screens = new List<ScreenData>();
+    
+    public GameObject lockParent;
+    public GameObject messagesParent;
+    public GameObject mapParent;
+
+    public GameObject clockObject;
+    public TMP_Text clockText;
+    // public ClockScript = $"{Clock.currentHour:D2}:{Clock.currentMinute:D2}:{Clock.currentSecond:D2}";
+
     public GameObject menuObject;
-    public GameObject lockObject;
-    public TMP_Text currentClock;
+    public TMP_Text menuText;
 
     public GameObject leftButtonHighlight;
     public GameObject rightButtonHighlight;
 
-    public GameObject lockParent;
-    public GameObject messagesParent;
-    public GameObject mapParent;
 
     public GameObject notificationA;
     public GameObject notificationA_highlight;
@@ -40,13 +43,17 @@ public class UIcontroller : MonoBehaviour
     public TMP_Text notificationC_abreviatedMessage;
     public TMP_Text notificationC_timestamp;
 
-    private bool isLeftSelected = false;
+    public int currentScreen = 0;
+    private int currentMessageIndex = 0;
     private bool isUnlocked = false;
-
+    private bool menuIsActive = false;
+    private bool leftMenuSelected = false;
+    private bool messageSelected = false;
+    
     void Start()
     {
-        // find the list of sent messages
-        sendMessage = GetComponent<SendMessage>();
+        // get the list of sent messages
+        messageSender = GetComponent<MessageSender>();
         
         // Create screen objects
         // displayed menu title
@@ -56,12 +63,13 @@ public class UIcontroller : MonoBehaviour
         screens.Add(new ScreenData("map", mapParent));
 
         // make sure the right objects are hidden or shown
-        lockObject.SetActive(true);
+        clockObject.SetActive(true);
         lockParent.SetActive(true);
         menuObject.SetActive(false);
         leftButtonHighlight.SetActive(false);
         rightButtonHighlight.SetActive(false);
         notificationA.SetActive(false);
+        notificationA_highlight.SetActive(false);
         notificationC.SetActive(false);
         notificationB.SetActive(false);
         foreach (ScreenData screen in screens)
@@ -83,31 +91,96 @@ public class UIcontroller : MonoBehaviour
         }
         else 
         {
-            // Detect arrow key presses
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            // Detect right arrow key
+            if (!messageSelected)
             {
-                HighlightRightButton();
+                if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    menuIsActive = true;
+                    HighlightRightButton();
+                }
+                // Detect left arrow key
+                else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    menuIsActive = true;
+                    HighlightLeftButton();
+                }
+                // Detect down arrow key
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    if (screens[currentScreen].title == "msgs") 
+                    {
+                    menuIsActive = false;
+                    HighlightMessage();
+                    }
+                }
+                // Detect enter and space keys
+                else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+                {
+                    if (menuIsActive) 
+                    {
+                    ConfirmMenuSelection();
+                    }
+                }
             }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            else
             {
-                HighlightLeftButton();
-            }
-            else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
-            {
-                ConfirmSelection();
+                // Detect up arrow key
+                if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    menuIsActive = true;
+                    messageSelected = false;
+                    currentMessageIndex = 0;
+                    notificationA_highlight.SetActive(false);
+                    leftMenuSelected = true;
+                    leftButtonHighlight.SetActive(true);
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    ShiftNotificationsDown();
+                }
             }   
         }
 
-        int messageCount = sendMessage.sentMessages.Count;
+        int messageCount = messageSender.sentMessages.Count;
+        int displayCount = Mathf.Min(3, messageCount);
 
-        // Loop through the first 3 entries or as many entries as exist in the list
-        for (int i = 0; i < Mathf.Min(3, messageCount); i++)
-        {
-            // Assuming you're updating notifications for positions "A", "B", "C"
-            string notificationPosition = GetNotificationPosition(i);
-            UpdateNotification(notificationPosition, sendMessage.sentMessages[i]);
+        if (!messageSelected){
+            for (int i = 0; i < displayCount; i++)
+            {
+                // Access messages in reverse order (newest first)
+                int index = messageCount - 1 - i;
+
+                // Map positions: newest = "A", second newest = "B", third newest = "C"
+                string notificationPosition = GetNotificationPosition(i);
+                UpdateNotification(notificationPosition, messageSender.sentMessages[index]);
+            }
         }
-      
+
+        // Hide notifications that are no longer needed
+        if (displayCount < 3) notificationC.SetActive(false);
+        if (displayCount < 2) notificationB.SetActive(false);
+    }
+
+    public void ShiftNotificationsDown()
+    {
+        int messageCount = messageSender.sentMessages.Count;
+        if (messageCount > 2)
+        {
+            // Update the starting index: Shift down the notifications by incrementing the index
+            currentMessageIndex++;
+
+            // Loop to update notification positions (A, B, C)
+            for (int i = 0; i < Mathf.Min(3, messageCount); i++)
+            {
+                // Calculate the index for the new "A", "B", "C"
+                int index = currentMessageIndex + i;
+
+                // Map positions: newest = "A", second newest = "B", third newest = "C"
+                string notificationPosition = GetNotificationPosition(i);
+                UpdateNotification(notificationPosition, messageSender.sentMessages[index]);
+            }
+        }
     }
 
     public void UpdateNotification(string motificationIdentifier, MessageData message)
@@ -116,54 +189,45 @@ public class UIcontroller : MonoBehaviour
         if (motificationIdentifier == "A") {
             notificationA.SetActive(true);
             notificationA_name.text = message.senderName;
-            notificationA_timestamp.text = currentClock.text;
+            notificationA_timestamp.text = clockText.text;
             notificationA_abreviatedMessage.text = message.fullMessage.Substring(0, 12);
         } 
         else if (motificationIdentifier == "B") 
         {
             notificationB.SetActive(true);
             notificationB_name.text = message.senderName;
-            notificationB_timestamp.text = currentClock.text;
+            notificationB_timestamp.text = clockText.text;
             notificationB_abreviatedMessage.text = message.fullMessage.Substring(0, 12);
         }
         else if (motificationIdentifier == "C") 
         {
             notificationC.SetActive(true);
             notificationC_name.text = message.senderName;
-            notificationC_timestamp.text = currentClock.text;
+            notificationC_timestamp.text = clockText.text;
             notificationC_abreviatedMessage.text = message.fullMessage.Substring(0, 12);
         }
     }
 
     public void HighlightLeftButton()
     {
-        isLeftSelected = true;
-        leftHighlight();
-        rightUnHighlight();
+        leftMenuSelected = true;
+        leftButtonHighlight.SetActive(true);
+        rightButtonHighlight.SetActive(false);
     }
 
     public void HighlightRightButton()
     {
-        isLeftSelected = false;
-        rightHighlight();
-        leftUnHighlight();
-    }
-
-    public void leftHighlight()
-    {
-        leftButtonHighlight.SetActive(true);
-    }
-    public void leftUnHighlight()
-    {
+        leftMenuSelected = false;
+        rightButtonHighlight.SetActive(true);
         leftButtonHighlight.SetActive(false);
     }
-    public void rightHighlight()
+
+    public void HighlightMessage()
     {
-        rightButtonHighlight.SetActive(true);
-    }
-    public void rightUnHighlight()
-    {
+        messageSelected = true;
         rightButtonHighlight.SetActive(false);
+        leftButtonHighlight.SetActive(false);
+        notificationA_highlight.SetActive(true);
     }
     
     public void UnlockPhone()
@@ -175,7 +239,7 @@ public class UIcontroller : MonoBehaviour
         
         // hide the clock + lockscreen and show the menu
         lockParent.SetActive(false);
-        lockObject.SetActive(false);
+        clockObject.SetActive(false);
         menuObject.SetActive(true);
 
         // decide which screen is opened first
@@ -195,6 +259,7 @@ public class UIcontroller : MonoBehaviour
             default: return "D"; 
         }
     }
+    
     public void UpdateContent()
     {
         // update the content of the menu and main screen
@@ -202,9 +267,9 @@ public class UIcontroller : MonoBehaviour
         screens[currentScreen].emptyParent.SetActive(true);
     }
 
-    public void ConfirmSelection()
+    public void ConfirmMenuSelection()
     {
-        if (isLeftSelected)
+        if (leftMenuSelected)
         {
             PreviousScreen();
         }
@@ -228,3 +293,4 @@ public class UIcontroller : MonoBehaviour
         UpdateContent();
     }
 }
+

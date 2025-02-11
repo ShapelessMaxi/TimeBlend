@@ -69,5 +69,5 @@ Material:
     - _Color: {r: 0.889937, g: 0.93268, b: 1, a: 0}
     - _Normal_Direction: {r: 1, g: 0, b: 1, a: 0}
     - _Position_Animation: {r: 0, g: 0, b: 0, a: 0}
-    - _UV_Shape: {r: 45, g: 25, b: 0, a: 0}
+    - _UV_Shape: {r: 10.7, g: 6.7, b: 0, a: 0}
   m_BuildTextureStacks: []

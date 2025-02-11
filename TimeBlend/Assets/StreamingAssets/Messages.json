@@ -3,14 +3,36 @@
         "messageType": "random",
         "isSent": false,
         "canBeSent": true,
-        "senderName": "Alice",
+        "senderName": "Kriss",
         "fullMessage": "Hey, what's up? Haven't seen you in a while!"
     },
     {
-        "messageType": "locsation",
-        "isSent": true,
+        "messageType": "random",
+        "isSent": false,
+        "canBeSent": true,
+        "senderName": "Paprika",
+        "fullMessage": "no coz what do you mean I nver told you i was dating freddy, its been going on for at least like 6 days."
+    },
+    {
+        "messageType": "random",
+        "isSent": false,
+        "canBeSent": true,
+        "senderName": "José",
+        "fullMessage": "what are you doing tonight, roommate is perforing at kittykat and I need emotional support."
+    },
+
+    {
+        "messageType": "location",
+        "isSent": false,
+        "canBeSent": false,
+        "senderName": "gym guy",
+        "fullMessage": "just finishing a few rep. will be in the shower in 10"
+    },
+    {
+        "messageType": "location",
+        "isSent": false,
         "canBeSent": false,
         "senderName": "Bob",
-        "fullMessage": "See you later, I'll text you when I get home."
+        "fullMessage": "Did I just see you in KKat??"
     }
 ]

@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+// Load and Organize message data from MessageData.cs
 public class MessageLoader : MonoBehaviour
 {
+    // Hold diffferent information available to other scripts
     public List<MessageData> allMessages = new List<MessageData>();
     public List<MessageData> randomMessages = new List<MessageData>();
     public List<MessageData> locationMessages = new List<MessageData>();
-    
-    public (float min, float max) timeRange = (0f, 5f);
     
     void Start()
     {
