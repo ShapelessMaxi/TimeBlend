@@ -691,7 +691,7 @@ GameObject:
   m_Component:
   - component: {fileID: 117918360}
   m_Layer: 0
-  m_Name: LockScreen
+  m_Name: Lock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -882,8 +882,8 @@ RectTransform:
   m_Children:
   - {fileID: 1110574463}
   - {fileID: 577175298}
-  - {fileID: 1770258965}
   - {fileID: 796664457}
+  - {fileID: 1770258965}
   - {fileID: 2015560442}
   m_Father: {fileID: 1051861057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1165,9 +1165,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1183209597}
-  - {fileID: 1051861057}
   - {fileID: 117918360}
+  - {fileID: 1051861057}
+  - {fileID: 1183209597}
   m_Father: {fileID: 1229451155}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2540,7 +2540,7 @@ GameObject:
   - component: {fileID: 673387084}
   - component: {fileID: 673387083}
   m_Layer: 0
-  m_Name: MenuScreen
+  m_Name: SmallScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3579,32 +3579,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messageSender: {fileID: 0}
+  clockParent: {fileID: 1568937130}
+  clockText: {fileID: 119824188}
+  menuParent: {fileID: 758347253}
+  menuText: {fileID: 1790303002}
+  leftMenu_higlight: {fileID: 973239309}
+  rightMenu_higlight: {fileID: 622568187}
   lockParent: {fileID: 117918359}
   messagesParent: {fileID: 1051861056}
+  notifA: {fileID: 481800055}
+  notifA_name: {fileID: 1504858355}
+  notifA_msg: {fileID: 248939162}
+  notifA_time: {fileID: 615204178}
+  notifA_highlight: {fileID: 807196383}
+  notifB: {fileID: 211027922}
+  notifB_name: {fileID: 1119008596}
+  notifB_msg: {fileID: 796664458}
+  notifB_time: {fileID: 1770258966}
+  notifC: {fileID: 1583528316}
+  notifC_name: {fileID: 1119008596}
+  notifC_msg: {fileID: 73551592}
+  notifC_time: {fileID: 2136680352}
   mapParent: {fileID: 1183209596}
-  clockObject: {fileID: 1568937130}
-  clockText: {fileID: 119824188}
-  menuObject: {fileID: 758347253}
-  menuText: {fileID: 1790303002}
-  leftButtonHighlight: {fileID: 973239309}
-  rightButtonHighlight: {fileID: 622568187}
-  notificationA: {fileID: 481800055}
-  notificationA_highlight: {fileID: 807196383}
-  notificationA_profilepic: {fileID: 1648945067}
-  notificationA_name: {fileID: 1504858355}
-  notificationA_abreviatedMessage: {fileID: 248939162}
-  notificationA_timestamp: {fileID: 615204178}
-  notificationB: {fileID: 211027922}
-  notificationB_profilepic: {fileID: 1110574462}
-  notificationB_name: {fileID: 577175299}
-  notificationB_abreviatedMessage: {fileID: 796664458}
-  notificationB_timestamp: {fileID: 1770258966}
-  notificationC: {fileID: 1583528316}
-  notificationC_profilepic: {fileID: 1214372840}
-  notificationC_name: {fileID: 1119008596}
-  notificationC_abreviatedMessage: {fileID: 73551592}
-  notificationC_timestamp: {fileID: 2136680352}
-  currentScreen: 0
 --- !u!114 &967848494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3961,7 +3957,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1051861057}
   m_Layer: 0
-  m_Name: Messages
+  m_Name: Msgs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5353,8 +5349,8 @@ RectTransform:
   m_Children:
   - {fileID: 1214372841}
   - {fileID: 1119008595}
-  - {fileID: 2136680351}
   - {fileID: 73551591}
+  - {fileID: 2136680351}
   - {fileID: 863446466}
   m_Father: {fileID: 1051861057}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
