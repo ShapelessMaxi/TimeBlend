@@ -4,28 +4,35 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 // UI controls            
-        // Lock Screen:
-        // lock animation, screen saver
-        // enter/space = unlock phone (1st screen is active, menu is active)
+    // Lock Screen:
+        // displays screen saver, amount of notifications
+        // enter = unlock phone (1st screen is active, menu is active)
 
-        // Menu: 
+    // Menu: 
         // Select and change phone screens
         // left/right = scroll through items/screens
-        // enter/space = select menu item (selected screen is active)
+        // enter = select menu item (selected screen is active)
+        // down = menu is inactive, select something on the screen
 
-        // Msgs Screen: 
+    // Msgs Screen: 
         // display 3 last mesages received
-        // down arrow key = select 1st message annd scroll through messages (1st is always selected)
-        // up arrow key = select menu left arrow
-        
-        // Map Screen:
+        // down = select and scroll through messages (1st is always selected)
+        // up = select menu left arrow
+    
+    // Conversation Screen:
+        // display the full message received, and answer it (a few options)
+        // left/right: select answer
+        // enter: send answer
 
-        // Fishing minigame Screen:
+    // Map Screen:
+
+    // Fishing minigame Screen:
 
 public class UIcontroller : MonoBehaviour
 {
     // access to list of sent messages
     public MessageSender messageSender;
+    public List<MessageData> receivedMessagesMod = new List<MessageData>();
 
     // list containing all Screen objects
     private List<ScreenData> screens = new List<ScreenData>();
@@ -77,10 +84,9 @@ public class UIcontroller : MonoBehaviour
     // UI status 
     public int currentScreen = 0;
     private bool menuIsActive = false;
+    private bool messageSelected = false;
     private bool rightMenuSelected = false;
     private bool leftMenuSelected = false;
-    private int currentMessageIndex = 0;
-    
 
     // Status reset and setup
     // create screen objects
@@ -118,71 +124,76 @@ public class UIcontroller : MonoBehaviour
     // key mapped logic for interaction witht the phone
     void Update()
     {   
-         switch(currentScreen)
-            {   
+        // menu is active
+        if (menuIsActive)
+        {
+            MenuControls();
+            if (currentScreen == 1)
+            { 
+                NotifDisplay(messageSender.sentMessages, false);
+            }                        
+        }
+        
+        // menu is not active
+        else
+        {
+            switch(currentScreen)
+            {    
                 // Lock Screen;
                 case 0:
-
-                    // menu is active
-                    if (menuIsActive)
+                    // Enter
+                    if (Input.GetKeyDown(KeyCode.Return))
                     {
-                        MenuControls();                        
-                    }
-                    // menu is not active
-                    else
-                    {
-                        // Enter
-                        if (Input.GetKeyDown(KeyCode.Return))
-                        {
-                            menuIsActive = true;
-                            
-                            // hide the clock and lockscreen
-                            clockParent.SetActive(false);
-                            lockParent.SetActive(false);
-                            // show the menu
-                            menuParent.SetActive(true);
+                        // hide the clock and lockscreen
+                        clockParent.SetActive(false);
+                        lockParent.SetActive(false);
+                        // show the menu
+                        menuParent.SetActive(true);
 
-                            // change to message screen
-                            currentScreen = 1;
+                        // activate the menu, status check, hide/show objects 
+                        ActivateMenu();
 
-                            // update the content of the small and main screen
-                            UpdateContent();
-                        }
+                        // change to message screen
+                        currentScreen = 1;
+
+                        // update the content of the small and main screen
+                        UpdateContent();
                     }
 
                     return;
 
                 // Message Screen
                 case 1:
-                    // display notifications
-                    NotifDisplay();
-
-                    // menu is active
-                    if (menuIsActive)
+                    // Up                        
+                    if (Input.GetKeyDown(KeyCode.UpArrow))
                     {
-                        MenuControls();                      
+                        messageSelected = false;
+                        ActivateMenu();
                     }
-                    // menu is not active
-                    else
+
+                    // Down
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) && messageSender.sentMessages != null)
                     {
-                        // Up                        
-                        if (Input.GetKeyDown(KeyCode.UpArrow))
+                        // scroll through messages (shift list)
+                        if (messageSelected)
                         {
-                            // status check
-                            menuIsActive = true;
-                            rightMenuSelected = false;
-                            leftMenuSelected = true;
-
-                            // game object desactivation
-                            notifA_highlight.SetActive(false);
-                            rightMenu_higlight.SetActive(false);
-                            leftMenu_higlight.SetActive(true);
+                            // display notifications (true for shift bool)
+                            NotifDisplay(receivedMessagesMod, true);
                         }
-
-                        // Down
-                        else if (Input.GetKeyDown(KeyCode.DownArrow) && messageSender.sentMessages != null)
+                        
+                        // no message selected (coming from menu)
+                        // select 1st message
+                        else 
                         {
+                            // re copy the list of received messages to be modified
+                            receivedMessagesMod = new List<MessageData>(messageSender.sentMessages);
+
+                            // display the notifications
+                            NotifDisplay(receivedMessagesMod, false);
+
                             // status check
+                            messageSelected = true;
+
                             menuIsActive = false;
                             rightMenuSelected = false;
                             leftMenuSelected = false;
@@ -195,61 +206,54 @@ public class UIcontroller : MonoBehaviour
                             leftMenu_higlight.SetActive(false);
                         }
                     }
-                    return;
 
+                    return;
+                        
                 // Map Screen
                 case 2:
-                    // menu is active
-                    if (menuIsActive)
+                    // Up                        
+                    if (Input.GetKeyDown(KeyCode.UpArrow))
                     {
-                        MenuControls();                        
+                        ActivateMenu();
                     }
-                    // menu is not active
-                    else
-                    {
-                        // Up                        
-                        if (Input.GetKeyDown(KeyCode.UpArrow))
-                        {
-                            // status check
-                            menuIsActive = true;
-                            rightMenuSelected = false;
-                            leftMenuSelected = true;
 
-                            // game object desactivation
-                            notifA_highlight.SetActive(false);
-                            rightMenu_higlight.SetActive(false);
-                            leftMenu_higlight.SetActive(true);
-                        }
-                    }
                     return;
 
                 default:
                     return;
             }
+        }
     }
-
+    
     // handle the logic of displaying the message notifications
-    void NotifDisplay()
+    void NotifDisplay(List<MessageData> messageList, bool shift)
     {
         // Compte le nombre de messages recus
-        int messageCount = messageSender.sentMessages.Count;
-
+        int messageCount = messageList.Count;
+        
         // Afficher un maximum de 3 notification
         // Retourne le nombre entier le plus petit entre 3 et le nombres de messages recus
         int displayCount = Mathf.Min(3, messageCount);
-
+        
         // Cacher les notifications superflues
-        if (displayCount < 3) notifC.SetActive(false);
-        if (displayCount < 2) notifB.SetActive(false);
-
+        notifA.SetActive(displayCount > 0);
+        notifB.SetActive(displayCount > 1);
+        notifC.SetActive(displayCount > 2);
+        
+        int shiftingIndex = 0;
+        if (shift) 
+        {
+          shiftingIndex = 1;
+        }
+    
         // count up to 3 (displayed notification)
         for (int i = 0; i < displayCount; i++)
         {
             // Access messages in reverse order (newest first)
-            int msgIndex = messageCount - 1 - i;
-            WriteNotification(i, messageSender.sentMessages[msgIndex]);
+            int msgIndex = messageCount - 1 - i - shiftingIndex;
+            // i = 0 = A, 1 = B, 2 = C
+            WriteNotification(i, messageList[msgIndex]);
         }
-
     }
     
     // Write the correct info on the correct game object
@@ -330,6 +334,7 @@ public class UIcontroller : MonoBehaviour
             {   
                 // message screen
                 case 1:
+                    NotifDisplay(messageSender.sentMessages, false);
                     notifA_highlight.SetActive(true);
                     return;
 
@@ -360,6 +365,22 @@ public class UIcontroller : MonoBehaviour
         }
     }
 
+    // ui controls to reactivate menu when on other screens
+    void ActivateMenu() 
+    {
+            // status check
+            menuIsActive = true;
+            rightMenuSelected = false;
+            leftMenuSelected = true;
+
+            // game object activation
+            leftMenu_higlight.SetActive(true);
+
+            // game object desactivation
+            notifA_highlight.SetActive(false);
+            rightMenu_higlight.SetActive(false);
+    }
+
     // display main screen content
     void UpdateContent()
     {
@@ -367,26 +388,4 @@ public class UIcontroller : MonoBehaviour
         menuText.text = screens[currentScreen].title;
         screens[currentScreen].emptyParent.SetActive(true);
     }
-
-    // to update
-    // scrol through messages / shift the messages up 
-    void ShiftNotifications()
-    {
-        int messageCount = messageSender.sentMessages.Count;
-        if (messageCount > 2)
-        {
-            // Update the starting index: Shift down the notifications by incrementing the index
-            currentMessageIndex++;
-
-            // Loop to update notification positions (A, B, C)
-            for (int i = 0; i < Mathf.Min(3, messageCount); i++)
-            {
-                // Calculate the index for the new "A", "B", "C"
-                int msgIndex = currentMessageIndex + i;
-
-                WriteNotification(i, messageSender.sentMessages[msgIndex]);
-            }
-        }
-    }
-
 }

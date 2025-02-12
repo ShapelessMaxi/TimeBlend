@@ -558,7 +558,7 @@ GameObject:
   - component: {fileID: 73551593}
   - component: {fileID: 73551592}
   m_Layer: 0
-  m_Name: abreviated_msgC
+  m_Name: msgC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -876,8 +876,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 211027922}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0030008473}
+  m_LocalScale: {x: 1.275, y: 1.275, z: 1.275}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1110574463}
@@ -889,7 +889,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.025, y: -0.15}
+  m_AnchoredPosition: {x: 0.05298418, y: -0.167004}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &241303456
@@ -1010,7 +1010,7 @@ GameObject:
   - component: {fileID: 248939163}
   - component: {fileID: 248939162}
   m_Layer: 0
-  m_Name: abreviated_msgA
+  m_Name: msgA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1955,8 +1955,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 481800055}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0030008473}
+  m_LocalScale: {x: 1.275, y: 1.275, z: 1.275}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 807196384}
@@ -1969,7 +1969,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.025, y: 0.05}
+  m_AnchoredPosition: {x: 0.05298418, y: 0.032995984}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &485079002
@@ -3010,7 +3010,7 @@ GameObject:
   - component: {fileID: 796664459}
   - component: {fileID: 796664458}
   m_Layer: 0
-  m_Name: abreviated_msgB
+  m_Name: msgB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3579,6 +3579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messageSender: {fileID: 0}
+  receivedMessagesMod: []
   clockParent: {fileID: 1568937130}
   clockText: {fileID: 119824188}
   menuParent: {fileID: 758347253}
@@ -3593,7 +3594,7 @@ MonoBehaviour:
   notifA_time: {fileID: 615204178}
   notifA_highlight: {fileID: 807196383}
   notifB: {fileID: 211027922}
-  notifB_name: {fileID: 1119008596}
+  notifB_name: {fileID: 577175299}
   notifB_msg: {fileID: 796664458}
   notifB_time: {fileID: 1770258966}
   notifC: {fileID: 1583528316}
@@ -3601,6 +3602,7 @@ MonoBehaviour:
   notifC_msg: {fileID: 73551592}
   notifC_time: {fileID: 2136680352}
   mapParent: {fileID: 1183209596}
+  currentScreen: 0
 --- !u!114 &967848494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5343,8 +5345,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1583528316}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
+  m_LocalPosition: {x: 0, y: 0, z: -0.003}
+  m_LocalScale: {x: 1.275, y: 1.275, z: 1.275}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1214372841}
@@ -5356,7 +5358,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.025, y: -0.345}
+  m_AnchoredPosition: {x: 0.053, y: -0.362}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1641030690
