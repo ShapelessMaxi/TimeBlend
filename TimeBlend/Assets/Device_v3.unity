@@ -3578,12 +3578,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa3320a71f3c4f4fb7cbb7df322ae63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messageSender: {fileID: 967848497}
+  messageSender: {fileID: 0}
   lockParent: {fileID: 117918359}
   messagesParent: {fileID: 1051861056}
   mapParent: {fileID: 1183209596}
-  clockObject: {fileID: 0}
-  clockText: {fileID: 0}
+  clockObject: {fileID: 1568937130}
+  clockText: {fileID: 119824188}
   menuObject: {fileID: 758347253}
   menuText: {fileID: 1790303002}
   leftButtonHighlight: {fileID: 973239309}
@@ -3649,6 +3649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c9449d701c3bd4eab91fa2b910d58b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  messageLoader: {fileID: 0}
   sentMessages: []
   minTime: 0
   maxTime: 5

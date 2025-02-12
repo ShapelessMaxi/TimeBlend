@@ -9,7 +9,7 @@ using TMPro;
 public class MessageSender : MonoBehaviour
 {
     // instance of MessageLoader.cs
-    private MessageLoader messageLoader;
+    public MessageLoader messageLoader;
 
     // all messages sent are stored here in order: oldest message index = 0, 2nd received = 1...
     public List<MessageData> sentMessages = new List<MessageData>();
@@ -20,7 +20,7 @@ public class MessageSender : MonoBehaviour
 
     void Start()
     {
-        messageLoader = FindObjectOfType<MessageLoader>();
+        messageLoader = GetComponent<MessageLoader>();
 
         // coroutine for almost randomly sent messages
         StartCoroutine(MessageRoutine());
