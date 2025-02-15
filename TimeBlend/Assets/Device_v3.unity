@@ -3031,7 +3031,7 @@ GameObject:
   - component: {fileID: 581390461}
   - component: {fileID: 581390460}
   m_Layer: 0
-  m_Name: higlight
+  m_Name: uphiglight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4985,7 +4985,7 @@ MonoBehaviour:
   notifA_name: {fileID: 1504858355}
   notifA_msg: {fileID: 248939162}
   notifA_time: {fileID: 615204178}
-  notifA_highlight: {fileID: 807196383}
+  notifA_hl: {fileID: 807196383}
   notifB: {fileID: 211027922}
   notifB_name: {fileID: 577175299}
   notifB_msg: {fileID: 796664458}
@@ -7396,7 +7396,7 @@ GameObject:
   - component: {fileID: 1550467246}
   - component: {fileID: 1550467245}
   m_Layer: 0
-  m_Name: higlight
+  m_Name: downhiglight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

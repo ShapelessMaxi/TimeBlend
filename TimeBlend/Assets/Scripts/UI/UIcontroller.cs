@@ -46,7 +46,6 @@ public class UIcontroller : MonoBehaviour
     public GameObject clockParent;
     public TMP_Text clockText;
     // having the reference to the actual clock script would be useful
-    // public ClockScript = $"{Clock.currentHour:D2}:{Clock.currentMinute:D2}:{Clock.currentSecond:D2}";
 
     // Menu component (small screen)
     [Header("Menu-Related OBJS")]
@@ -77,7 +76,7 @@ public class UIcontroller : MonoBehaviour
     public TMP_Text notifA_time;
     // public GameObject notifA_pic;
     // only need a highligther on the 1st msg
-    public GameObject notifA_highlight;
+    public GameObject notifA_hl;
 
     // Received Messages middle Notification
     [Header("Middle Notification")]
@@ -113,6 +112,7 @@ public class UIcontroller : MonoBehaviour
     private bool downButtonSelected = false;
 
     public bool screenIsActive = false;
+    private bool notifSelected = false;
 
 
     // Status reset and setup
@@ -133,17 +133,19 @@ public class UIcontroller : MonoBehaviour
         lockParent.SetActive(true);
 
         // make sure the right objects are desactivated
+        screens.ForEach(screen => screen.emptyParent.SetActive(false));
+        
         menuParent.SetActive(false);
-        leftMenu_hl.SetActive(false);
-        rightMenu_hl.SetActive(false);
-
         subMenuParent.SetActive(false);
+
+        rightMenu_hl.SetActive(false);
+        leftMenu_hl.SetActive(false);
+
         upButton_hl.SetActive(false);
         downButton_hl.SetActive(false);
 
-        screens.ForEach(screen => screen.emptyParent.SetActive(false));
-
-        notifA_highlight.SetActive(false);
+        notifA_hl.SetActive(false);
+        
         notifA.SetActive(false);
         notifC.SetActive(false);
         notifB.SetActive(false);
@@ -151,14 +153,31 @@ public class UIcontroller : MonoBehaviour
         UpdateContent();
     }
     
-    // runs each frame
-    // key mapped logic for interaction witht the phone
+    // key mapped logic for interaction with the phone
     void Update()
     {   
-        // menu is active
+       
+        // Menu is active: Menu controls on, Update mmessage list (receive on)
         if (menuIsActive)
         {
             MenuControls();
+
+            switch(currentScreen)
+            {
+                // Message screen
+                case 1:
+                    // Receive Messages (update the notification list)
+                    if (messageSender.sentMessages != null)
+                    {
+                        UpdateNotification(messageSender.sentMessages);
+                    }
+                    
+                    return;
+                
+                default:
+                    //
+                    return;
+            }
         }
         
         // submenu is active
@@ -170,97 +189,11 @@ public class UIcontroller : MonoBehaviour
         // mainscreen is active
         else if (screenIsActive)
         {
-            // check wich screen is currently selected
-            switch(currentScreen)
-            {    
-                // Lock Screen
-                case 0:
-                    // Enter: activate menu, switch to message screen
-                    if (Input.GetKeyDown(KeyCode.Return))
-                    {
-                        // change to message screen
-                        currentScreen = 1;
-
-                        // show the menu
-                        menuParent.SetActive(true);
-
-                        // hide the clock and lockscreen
-                        clockParent.SetActive(false);
-                        lockParent.SetActive(false);
-
-                        // activate the menu, status check, hide/show objects 
-                        ActivateMenu();
-
-                        // update the content of the small and main screen
-                        UpdateContent();
-                    }
-
-                    return;
-
-                // Message Screen
-                case 1:
-                    // block the reception of messages
-                    messagesFrozen = new List<MessageData>(messageSender.sentMessages);
-
-                    // Up
-                    if (subMenuIsActive)
-                    {
-                        
-                    }
-                    else if (Input.GetKeyDown(KeyCode.UpArrow) && !subMenuIsActive)
-                    {
-                        ActivateMenu();
-                    }
-
-                    // Down
-                    else if (Input.GetKeyDown(KeyCode.DownArrow) && subMenuIsActive)
-                    {
-                        // scroll through messages (shift list)
-                        // replace with ShiftNotifDisplay()
-                        // UpdateNotification(messagesShifting);
-                    }
-                    else if  (Input.GetKeyDown(KeyCode.DownArrow) && !subMenuIsActive && messageSender.sentMessages != null)
-                    {
-                        // activate submenu
-                        ActivateSubMenu();
-                    }
-                    
-                    // Enter
-                    else if (Input.GetKeyDown(KeyCode.Return) && subMenuIsActive)
-                    {
-                        // select left 
-                        if (upButtonSelected) 
-                        {
-                            // change screens
-                            currentScreen = (currentScreen - 1 + screens.Count) % screens.Count;
-                            UpdateContent();
-                        }
-                        // select rgiht
-                        else if (downButtonSelected)
-                        {
-                            // change screens
-                            currentScreen = (currentScreen + 1) % screens.Count;
-                            UpdateContent();
-                        }
-
-                        // select 1st message
-                        notifA_highlight.SetActive(true);
-                    }
-
-                    return;
-                        
-                // Map Screen
-                case 2:
-
-                    return;
-
-                default:
-                    return;
-            }
+            ScreenControls();
         }
 
         // all other status are false, meaning the phone is locked
-        // Down: unlock phone, activate menu
+        // Down: unlock phone, activate menu, display the messages
         else if (Input.GetKeyDown(KeyCode.Return))
         {
             // activate main menu
@@ -277,36 +210,25 @@ public class UIcontroller : MonoBehaviour
             // change and update the screen
             currentScreen = 1;
             UpdateContent();
+
+            UpdateNotification(messageSender.sentMessages);
         }
     }
     
-    // ui controls when the menu is active
+    // Ui Controls
+    // Menu: assuming menuIsActive is already true
     void MenuControls()
     {
         // Right: select right arrow key
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            // status check
-            menuIsActive = true;
-            rightMenuSelected = true;
-            leftMenuSelected = false;
-
-            // game object activation
-            rightMenu_hl.SetActive(true);
-            leftMenu_hl.SetActive(false);
+            SelectRightMenu();
         }
 
         // Left: select left arrow key
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            // status check
-            menuIsActive = true;
-            rightMenuSelected = false;
-            leftMenuSelected = true;
-
-            // game object activation
-            leftMenu_hl.SetActive(true);
-            rightMenu_hl.SetActive(false);
+            SelectLeftMenu();
         }
 
         // Down: activate subMenu, desactivate menu
@@ -320,7 +242,7 @@ public class UIcontroller : MonoBehaviour
             {   
                 // message screen: update the notifications, select up arrow 
                 case 1:
-                    upButton_hl.SetActive(true);
+                    SelectUpButton();
                     if (messageSender.sentMessages != null)
                     {
                         UpdateNotification(messageSender.sentMessages);
@@ -354,14 +276,14 @@ public class UIcontroller : MonoBehaviour
         }
     }
 
-    // ui controls when the subMenu is active
+    // SubMenu: assuming subMenuIsActive is already true
     void subMenuControls()
     {
         // Right: activate screen, desactivate subMenu
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             // Menu status and objs off
-            DesactivateMenu();
+            DesactivateSubMenu();
 
             // Screen status and objs on
             ActivateScreen(); 
@@ -370,25 +292,25 @@ public class UIcontroller : MonoBehaviour
         // Up: higlight up arrow
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            // update selection status
-            downButtonSelected = false;
-            upButtonSelected = true;
-
-            // game object desactivation
-            downButton_hl.SetActive(false);
-            leftMenu_hl.SetActive(true);
+            // Up button is already selected
+            // Activate Menu, Desactivate SubMenu
+            if (upButtonSelected){
+                ActivateMenu();
+                DesactivateSubMenu();
+            }
+            else 
+            {
+                SelectUpButton();
+            }
         }
 
         // Down: highlight down arrow
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            // update selection status
-            downButtonSelected = true;
-            upButtonSelected = false;
-
-            // game object desactivation
-            downButton_hl.SetActive(true);
-            leftMenu_hl.SetActive(false);
+            if (!downButtonSelected)
+            {
+                SelectDownButton();
+            }
         }
 
         // Enter: Scroll the list of message up or down
@@ -399,11 +321,13 @@ public class UIcontroller : MonoBehaviour
                 // function that scroll up
                 currentMessage = (currentMessage - 1 + screens.Count) % screens.Count;
 
+                Debug.Log("Display previous message");
                 // UpdateNotification(messagesFrozen);
 
             }
             else if (downButtonSelected)
             {
+                Debug.Log("Display next message");
                 // function that scroll down
             }
         }
@@ -412,132 +336,200 @@ public class UIcontroller : MonoBehaviour
     // ui controls when the screen is active
     void ScreenControls()
     {
-        // Left, When screen is active
+        // Left: Activate SubMenu, Desactivate Screen
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            // reactivate submenu
+            // Activate SubMenu
             ActivateSubMenu();
+
+            // Desactivate Screen
+            DesactivateScreen();
         }
 
-        // Down
+        // Enter: Show Full Message
+        else if (Input.GetKeyDown(KeyCode.Return))
+        {
+            Debug.Log("Show Full Message");
+        }
     }
 
+    // Activation of UI component: Menu, SubMenu, Screen
     // set status, show/hide g objects
     void ActivateMenu() 
     {
-            // status check
-            menuIsActive = true;
-            subMenuIsActive = false;
-            screenIsActive = false;
+        // Set Status of Components
+        menuIsActive = true;
+        subMenuIsActive = false;
+        screenIsActive = false;
 
-            rightMenuSelected = false;
-            leftMenuSelected = true;
+        SelectLeftMenu();
 
-            upButtonSelected = false;
-            downButtonSelected = false;
-
-            // game object activation
-            menuParent.SetActive(true);
-
-            leftMenu_hl.SetActive(true);
-            rightMenu_hl.SetActive(false);
-
-            upButton_hl.SetActive(false);
-            downButton_hl.SetActive(false);
-
-            notifA_highlight.SetActive(false);
+        // game object activation
+        menuParent.SetActive(true);
     }
-    
     void DesactivateMenu()
     {
-        // status check
+        // Set Status for desactivated Component
         menuIsActive = false;
-        rightMenuSelected = false;
-        leftMenuSelected = false;
 
-        // game object desactivation
-        rightMenu_hl.SetActive(false);
-        leftMenu_hl.SetActive(false);
+        // Deselect menu buttons
+        DeselectMenu();
     }
 
     // set status, show/hide g objects
     void ActivateSubMenu()
     {
-        // status check
+        // Set Status of Components
         subMenuIsActive = true;
         menuIsActive = false;
+        screenIsActive = false;
 
-        rightMenuSelected = false;
-        leftMenuSelected = false;
-
-        upButtonSelected = true;
-        downButtonSelected = false;
-
-        // game object activation
-        downButton_hl.SetActive(true);
-
-        rightMenu_hl.SetActive(false);
-        leftMenu_hl.SetActive(false);
-        upButton_hl.SetActive(false);
+        // Select Down SubMenu button (and deselect up button)
+        SelectDownButton();
     } 
-    
     void DesactivateSubMenu()
     {
-        // status check
+        // Set Status for desactivated Component
         subMenuIsActive = false;
-        upButtonSelected = false;
-        downButtonSelected = false;
 
-        // game object desactivation
-        rightMenu_hl.SetActive(false);
-        leftMenu_hl.SetActive(false);
+        // Deselect sub menu buttons
+        DeselectSubMenu();
     }
-
+    
     // set status, show/hide g objects
     void ActivateScreen()
     {
-        // // status check
-        // subMenuIsActive = true;
-        // menuIsActive = false;
-        // rightMenuSelected = false;
-        // leftMenuSelected = false;
-        // upButtonSelected = true;
-        // downButtonSelected = false;
+        // status check
+        subMenuIsActive = false;
+        menuIsActive = false;
+        screenIsActive = true;
 
-        // // game object activation
-        // downButton_hl.SetActive(true);
-
-        // // game object desactivation
-        // rightMenu_hl.SetActive(false);
-        // leftMenu_hl.SetActive(false);
-        // upButton_hl.SetActive(false);
+        // Select screen things depending on current screen
+        switch(currentScreen)
+        {
+            case 0:
+                return;
+            // Message Screen 
+            case 1:
+                SelectNotif();
+                return;
+            default:
+                return;
+        }        
     } 
-
     void DesactivateScreen()
     {
+        // Set Status for desactivated Component
+        screenIsActive = false;
 
+        // Deselect screen things depending on current screen
+        switch(currentScreen)
+        {
+            case 0:
+                return;
+            // Message Screen 
+            case 1:
+                DeselectNotif();
+                return;
+            default:
+                return;
+        }        
+    }
+    // this is empty 
+
+    // Selection of UI items
+    // Select Menu Buttons (and deselect the other)
+    void SelectRightMenu()
+    {
+        // update selection status
+        rightMenuSelected = true;
+        leftMenuSelected = false;
+
+        // game object desactivation
+        rightMenu_hl.SetActive(true);
+        leftMenu_hl.SetActive(false);
+    }
+    void SelectLeftMenu()
+    {
+        // update selection status
+        rightMenuSelected = false;
+        leftMenuSelected = true;
+
+        // game object desactivation
+        rightMenu_hl.SetActive(false);
+        leftMenu_hl.SetActive(true);
+    }
+    void DeselectMenu()
+    {
+        // Deselect buttons
+        rightMenuSelected = false;
+        leftMenuSelected = false;
+
+        // Remove Highlight
+        rightMenu_hl.SetActive(false);
+        leftMenu_hl.SetActive(false);
+    }
+    
+    // Select SubMenu Buttons (and deselect the other)
+    void SelectUpButton()
+    {
+        // Select up button
+        upButtonSelected = true;
+        upButton_hl.SetActive(true);
+
+        // Deselect down button
+        downButtonSelected = false;
+        downButton_hl.SetActive(false);
+    }
+    void SelectDownButton()
+    {
+        // Select down button
+        downButtonSelected = true;
+        downButton_hl.SetActive(true);
+        
+        // Deelect up button
+        upButtonSelected = false;
+        upButton_hl.SetActive(false);
+    }
+    void DeselectSubMenu()
+    {
+        // Deselect buttons
+        upButtonSelected = false;
+        downButtonSelected = false;
+
+        // Remove Highlight
+        upButton_hl.SetActive(false);
+        downButton_hl.SetActive(false);
+    }
+   
+    // Select Screen Notification
+    void SelectNotif()
+    {
+        // keep status
+        notifSelected = true;
+
+        // Select the first message
+        notifA_hl.SetActive(true);
+    }
+    void DeselectNotif() 
+    {
+        // keep status
+        notifSelected = false;
+
+        // Select the first message
+        notifA_hl.SetActive(false);   
     }
 
+    // Display and Update information
     // display main screen content
     void UpdateContent()
     {
         // update the content of the menu and main screen
         menuText.text = screens[currentScreen].title;
         screens[currentScreen].emptyParent.SetActive(true);
-
-        switch(currentScreen)
-        {
-            case 0:
-                // UpdateContent();
-    
-                return;
-            case 1:
-                UpdateNotification(messageSender.sentMessages);
-                return;
-        }    
     }
-
-    // new function
+    
+    // display the notifications (3)
     void UpdateNotification(List<MessageData> messages)
     {
         // Count of message list
