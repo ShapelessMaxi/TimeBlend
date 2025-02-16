@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
     public float BobbingLength = 0.3f;
 
     // hidden variables
-    private float initialY = 7.0f;
+    public float initialY = 7.0f;
     private float bobbingTimer = 0f;
     private float rotationY = 0f;
 
@@ -66,6 +66,6 @@ public class CameraController : MonoBehaviour
         }
 
         // Apply rotation
-        transform.rotation = Quaternion.Euler(0, rotationY, 0);
+        transform.rotation = Quaternion.Euler(2, rotationY, 0);
     }
 }

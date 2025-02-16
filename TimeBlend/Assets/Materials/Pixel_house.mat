@@ -7,14 +7,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ground
-  m_Shader: {fileID: -6465566751694194690, guid: 6c9bfc7f141cd414e8415352b7dc4e05,
+  m_Name: Pixel_house
+  m_Shader: {fileID: -6465566751694194690, guid: 0a22e5e15f7415943aeb2eb2a32dea85,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -24,16 +24,12 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _SampleTexture2D_5e313bea3ac3461189402309be7ce8fe_Texture_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: 57a95aa368672af49a28ce664deff3d2, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _Texture:
-        m_Texture: {fileID: 2800000, guid: 5aab3b0943255fb44ba920d3bec90e03, type: 3}
+        m_Texture: {fileID: 2800000, guid: a17e2781e4437af4187398f5ce3069be, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _UVmap:
-        m_Texture: {fileID: 2800000, guid: 50b0a87e0392a0540884c1e2861dc61a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8956ba8d9769985479466bc00389d1bd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -53,12 +49,11 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Color: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 0}
-    - _Normal_Direction: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 0.889937, g: 0.93268, b: 1, a: 0}
     - _Position_Animation: {r: 0, g: 0, b: 0, a: 0}
-    - _UV_Shape: {r: 52.14, g: -26.34, b: 0, a: 0}
+    - _UV_Shape: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &990806678860212890
+--- !u!114 &7274226161366272894
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
